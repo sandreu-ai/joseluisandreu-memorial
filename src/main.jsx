@@ -64,7 +64,7 @@ const content = {
     },
     memories: {
       kicker: 'Memory wall',
-      title: 'Stories shared for Jose Luis',
+      title: 'Stories of Jose Luis shared',
       loading: 'Loading memories…',
     },
     gallery: {
