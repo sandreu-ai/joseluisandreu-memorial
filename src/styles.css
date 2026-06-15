@@ -114,12 +114,15 @@ a { color: inherit; }
 }
 .hero::before {
   background:
-    radial-gradient(circle at 74% 36%, rgba(185, 138, 58, 0.16), transparent 21rem),
-    linear-gradient(115deg, rgba(255, 255, 255, 0.52), transparent 58%);
+    linear-gradient(180deg, rgba(251, 247, 239, 0.62), rgba(251, 247, 239, 0.82)),
+    radial-gradient(circle at 74% 36%, rgba(185, 138, 58, 0.18), transparent 21rem),
+    url('/header-background.jfif') center / cover no-repeat;
+  background-blend-mode: normal, soft-light, multiply;
   border: 1px solid rgba(255,255,255,0.42);
   border-radius: 44px;
   content: "";
   inset: clamp(16px, 3vw, 42px);
+  opacity: 0.72;
   pointer-events: none;
   position: absolute;
 }
