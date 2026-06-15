@@ -72,6 +72,38 @@ function App() {
     loadMemories();
   }, []);
 
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return undefined;
+
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('is-visible');
+        });
+      },
+      { threshold: 0.14, rootMargin: '0px 0px -8% 0px' }
+    );
+
+    document.querySelectorAll('[data-reveal]').forEach((element) => revealObserver.observe(element));
+
+    let frame = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        document.documentElement.style.setProperty('--scroll-y', `${window.scrollY * 0.08}px`);
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      revealObserver.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [memories.length]);
+
   async function uploadFiles(memoryId) {
     const uploaded = [];
     for (const file of files) {
@@ -148,7 +180,7 @@ function App() {
       </nav>
 
       <header id="top" className="hero">
-        <div className="hero-copy">
+        <div className="hero-copy" data-reveal>
           <p className="eyebrow">In loving memory</p>
           <h1>José Luis Andreu</h1>
           <p className="lede">A public place for family and friends to remember him, share stories, and preserve the photos and videos that hold his presence.</p>
@@ -157,19 +189,19 @@ function App() {
             <a className="button ghost" href="#videos"><PlayCircle size={18} /> Watch His Interviews</a>
           </div>
         </div>
-        <figure className="hero-photo">
+        <figure className="hero-photo" data-reveal>
           <img src="/hero.jpg" alt="José Luis Andreu holding a gold chalice in a church" />
         </figure>
       </header>
 
-      <section className="intro section">
+      <section className="intro section" data-reveal>
         <p className="section-kicker">For everyone who knew him</p>
         <h2>Bring the memories together.</h2>
         <p>Stories can live in texts, camera rolls, old phones, group chats, and quiet conversations. This site gathers them into one lasting place — immediately visible, public, and easy to share.</p>
       </section>
 
       <section id="share" className="section share-grid">
-        <div>
+        <div data-reveal>
           <p className="section-kicker">Share something</p>
           <h2>Write a memory. Add a photo or video.</h2>
           <p>Posts are designed to appear right away. Please share what feels true: a story, a prayer, a funny moment, a voice, a place, a lesson, or a photo you treasure.</p>
@@ -179,7 +211,7 @@ function App() {
             </div>
           )}
         </div>
-        <form onSubmit={handleSubmit} className="memory-form">
+        <form onSubmit={handleSubmit} className="memory-form" data-reveal>
           <label>Name <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your name" /></label>
           <label>Relationship <input value={form.relationship} onChange={(e) => setForm({ ...form, relationship: e.target.value })} placeholder="Friend, cousin, coworker…" /></label>
           <label>Memory <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Share a memory of José Luis…" rows="6" /></label>
@@ -193,13 +225,13 @@ function App() {
         </form>
       </section>
 
-      <section id="memories" className="section">
+      <section id="memories" className="section" data-reveal>
         <p className="section-kicker">Memory wall</p>
         <h2>Stories shared for José Luis</h2>
         {loading ? <p>Loading memories…</p> : (
           <div className="memory-wall">
             {memories.map((memory) => (
-              <article className="memory-card" key={memory.id}>
+              <article className="memory-card" key={memory.id} data-reveal>
                 <p className="memory-message">“{memory.message}”</p>
                 {memory.caption && <p className="caption">{memory.caption}</p>}
                 <footer>
@@ -213,7 +245,7 @@ function App() {
         )}
       </section>
 
-      <section id="gallery" className="section gallery-section">
+      <section id="gallery" className="section gallery-section" data-reveal>
         <div className="section-heading-row">
           <div>
             <p className="section-kicker">Photos & videos</p>
@@ -224,7 +256,7 @@ function App() {
         {galleryItems.length === 0 ? <p className="empty">Photos and videos will appear here as people share them.</p> : (
           <div className="gallery">
             {galleryItems.map((item, index) => (
-              <figure key={`${item.url}-${index}`}>
+              <figure key={`${item.url}-${index}`} data-reveal>
                 {item.type?.startsWith('video/') ? <video src={item.url} controls /> : <img src={item.url} alt={item.memory.caption || `Shared memory from ${item.memory.name}`} />}
                 <figcaption>{item.memory.caption || item.memory.name}</figcaption>
               </figure>
@@ -233,13 +265,13 @@ function App() {
         )}
       </section>
 
-      <section id="videos" className="section videos-section">
+      <section id="videos" className="section videos-section" data-reveal>
         <p className="section-kicker">In his own words</p>
         <h2>Interviews with José Luis</h2>
         <p className="section-intro">These conversations preserve his voice, his stories, and the way he carried himself — something family and friends can return to whenever they need to hear him again.</p>
         <div className="videos">
           {interviews.map((video) => (
-            <article className="video-card" key={video.videoId}>
+            <article className="video-card" key={video.videoId} data-reveal>
               <div className="iframe-wrap">
                 <iframe src={`https://www.youtube.com/embed/${video.videoId}`} title={video.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
               </div>
