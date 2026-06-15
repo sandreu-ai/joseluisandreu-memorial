@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Camera, Heart, Mail, PlayCircle, Send, Upload, Video } from 'lucide-react';
 import { MEDIA_BUCKET, isSupabaseConfigured, supabase } from './supabase';
+import { Analytics } from '@vercel/analytics/react';
 import './styles.css';
 
 const interviews = [
@@ -286,6 +287,7 @@ function App() {
         <p>Made as a place to remember José Luis Andreu.</p>
         <a href="mailto:?subject=Memories of José Luis Andreu&body=Please visit joseluisandreu.com to share your memories, photos, and videos."><Mail size={16} /> Invite someone to share</a>
       </footer>
+      <Analytics />
     </main>
   );
 }
