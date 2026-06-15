@@ -16,6 +16,17 @@ const demoMemories = [
   },
 ];
 
+const tributeParagraphs = [
+  'Bendecimos al Señor por la vida de nuestro padre, José Luis, el corazón de una familia inmensa y profundamente unida. Fue esposo amado, padre de nueve hijos, suegro de nueve más y orgulloso abuelo de cuarenta y dos nietos.',
+  'Durante los últimos 35 años de su vida, se entregó por completo al servicio de Dios como misionero del Camino Neocatecumenal dentro de la Iglesia Católica, enviado junto a su esposa por San Juan Pablo II. Junto a su amada esposa, Ángela, se “gastó y desgastó” por el anuncio del Evangelio, siguiendo con fidelidad el mandato del Señor: «Id por todo el mundo y proclamad el Evangelio a toda criatura» (Mc 16, 15).',
+  'Somos testigos de su infatigable celo por la misión, de su disponibilidad constante para ir donde la Iglesia lo necesitara y de su profundo amor por Cristo y por las personas que el Señor puso en su camino. Su mayor deseo era que otros pudieran encontrarse con Jesucristo y experimentar su amor y su misericordia.',
+  'Para muchos, José Luis fue mucho más que un amigo o un catequista; fue una verdadera figura paterna. Con su sabiduría, su cercanía y su amor sincero, acompañó a innumerables personas a lo largo de sus vidas. Muchos encontraron en él una palabra de ánimo, un consejo oportuno y el cariño de un padre.',
+  'Damos gracias a Dios por el regalo de su vida, por su testimonio de fe y por el amor que sembró en su familia, en la Iglesia y en todos aquellos que tuvieron la gracia de conocerlo.',
+  'En estos momentos difíciles, muchas personas nos han preguntado cómo pueden apoyar a nuestra familia. Por ello, hemos creado este espacio para quienes deseen colaborar voluntariamente con los gastos funerarios y otros gastos relacionados con su despedida.',
+  'Toda ayuda será recibida con sincera gratitud. Sin embargo, les pedimos sobre todo sus oraciones por el eterno descanso de nuestro padre y por el consuelo y la fortaleza de nuestra madre, de sus hijos, de sus nietos y de toda nuestra familia.',
+  'Agradecemos de corazón cada oración, mensaje, recuerdo y muestra de cariño. Confiamos en la promesa de Cristo:',
+];
+
 function formatDate(value) {
   return new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(value));
 }
@@ -160,6 +171,7 @@ function App() {
       <nav className="nav" aria-label="Main navigation">
         <a href="#top" className="brand">Jose Luis Andreu</a>
         <div>
+          <a href="#tribute">Tribute</a>
           <a href="#share">Share</a>
           <a href="#memories">Memories</a>
         </div>
@@ -179,6 +191,22 @@ function App() {
           <img src="/hero.jpg" alt="Jose Luis Andreu holding a gold chalice in a church" />
         </figure>
       </header>
+
+      <section id="tribute" className="section tribute-section" data-reveal>
+        <div className="tribute-card">
+          <p className="section-kicker">Un testimonio de fe y amor</p>
+          <h2>Siervo bueno y fiel.</h2>
+          <div className="tribute-copy">
+            {tributeParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            <blockquote>
+              «En la casa de mi Padre hay muchas moradas; si no, ¿os lo habría dicho, puesto que voy a prepararos lugar? Y cuando haya ido y os haya preparado un lugar, volveré y os tomaré conmigo, para que donde esté yo, estéis también vosotros.»
+              <cite>Juan 14, 2-3</cite>
+            </blockquote>
+            <p>Que el Señor lo reciba en su gloria y le conceda el descanso eterno.</p>
+            <p className="tribute-closing">Ha combatido el buen combate, ha terminado la carrera y ha mantenido la fe.</p>
+          </div>
+        </div>
+      </section>
 
       <section className="intro section" data-reveal>
         <p className="section-kicker">For everyone who knew him</p>

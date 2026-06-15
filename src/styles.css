@@ -189,6 +189,64 @@ h3 { font-size: 1.28rem; letter-spacing: -0.025em; }
   max-width: 1060px;
   text-align: center;
 }
+.tribute-section {
+  padding-bottom: clamp(42px, 6vw, 88px);
+  padding-top: clamp(42px, 6vw, 88px);
+}
+.tribute-card {
+  background:
+    linear-gradient(135deg, rgba(255, 252, 246, 0.9), rgba(244, 234, 219, 0.72)),
+    radial-gradient(circle at 92% 8%, rgba(216, 183, 121, 0.2), transparent 22rem);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  margin: 0 auto;
+  max-width: 1120px;
+  padding: clamp(28px, 5vw, 68px);
+}
+.tribute-card h2 { max-width: 780px; }
+.tribute-copy {
+  color: var(--muted);
+  column-gap: clamp(28px, 4vw, 54px);
+  columns: 2 320px;
+  font-size: clamp(1.03rem, 1.35vw, 1.18rem);
+  line-height: 1.82;
+  margin-top: 28px;
+  text-wrap: pretty;
+}
+.tribute-copy p {
+  break-inside: avoid;
+  margin: 0 0 1.15em;
+}
+.tribute-copy blockquote {
+  background: rgba(33, 27, 22, 0.94);
+  border-left: 4px solid var(--gold-soft);
+  border-radius: 22px;
+  break-inside: avoid;
+  color: #fff6e7;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.18rem, 1.7vw, 1.48rem);
+  line-height: 1.5;
+  margin: 8px 0 1.15em;
+  padding: clamp(22px, 3vw, 34px);
+}
+.tribute-copy cite {
+  color: #f2c777;
+  display: block;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  margin-top: 18px;
+  text-transform: uppercase;
+}
+.tribute-closing {
+  color: var(--gold-deep);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.28rem, 2vw, 1.8rem);
+  line-height: 1.35;
+}
 .intro p:last-child, .section-intro, .share-grid > div > p {
   color: var(--muted);
   font-size: 1.14rem;
