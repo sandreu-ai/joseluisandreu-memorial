@@ -252,10 +252,8 @@ h3 { font-size: 1.28rem; letter-spacing: -0.025em; }
 }
 .tribute-card {
   background:
-    linear-gradient(135deg, rgba(255, 252, 246, 0.9), rgba(244, 234, 219, 0.8)),
-    radial-gradient(circle at 92% 8%, rgba(216, 183, 121, 0.2), transparent 22rem),
-    url('/tribute-background.jfif') right 8% top 12% / min(46vw, 430px) no-repeat;
-  background-blend-mode: normal, soft-light, multiply;
+    linear-gradient(135deg, rgba(255, 252, 246, 0.9), rgba(244, 234, 219, 0.72)),
+    radial-gradient(circle at 92% 8%, rgba(216, 183, 121, 0.2), transparent 22rem);
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow);
@@ -278,7 +276,10 @@ h3 { font-size: 1.28rem; letter-spacing: -0.025em; }
   margin: 0 0 1.15em;
 }
 .tribute-copy blockquote {
-  background: rgba(33, 27, 22, 0.94);
+  background:
+    linear-gradient(135deg, rgba(24, 19, 15, 0.88), rgba(33, 27, 22, 0.94)),
+    url('/tribute-background.jfif') right 12% center / min(68%, 360px) no-repeat;
+  background-blend-mode: multiply;
   border-left: 4px solid var(--gold-soft);
   border-radius: 22px;
   break-inside: avoid;
@@ -287,6 +288,7 @@ h3 { font-size: 1.28rem; letter-spacing: -0.025em; }
   font-size: clamp(1.18rem, 1.7vw, 1.48rem);
   line-height: 1.5;
   margin: 8px 0 1.15em;
+  overflow: hidden;
   padding: clamp(22px, 3vw, 34px);
 }
 .tribute-copy cite {
