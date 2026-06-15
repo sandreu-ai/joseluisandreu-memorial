@@ -87,7 +87,7 @@ Remove conflicting parking/redirect records if Namecheap has them.
 - Submit a test memory
 - Upload one small photo
 - Confirm it appears on the memory wall/gallery
-- Watch both interview embeds
+
 
 ## Important security note
 

@@ -1,28 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Camera, Heart, Mail, PlayCircle, Send, Upload, Video } from 'lucide-react';
+import { Camera, Mail, Send, Upload } from 'lucide-react';
 import { MEDIA_BUCKET, isSupabaseConfigured, supabase } from './supabase';
 import './styles.css';
-
-const interviews = [
-  {
-    title: 'Jose Luis Andreu interview (part 1)',
-    videoId: 'umdoomRDveM',
-    url: 'https://youtu.be/umdoomRDveM',
-  },
-  {
-    title: 'Jose Luis Andreu interview (part 2)',
-    videoId: 'qDe8r-Ee38g',
-    url: 'https://youtu.be/qDe8r-Ee38g',
-  },
-];
 
 const demoMemories = [
   {
     id: 'welcome',
     name: 'Family and friends',
     relationship: 'Everyone who loved him',
-    message: 'This wall is here for stories, photos, videos, prayers, and the little moments that help us remember José Luis together.',
+    message: 'This wall is here for stories, photos, videos, prayers, and the little moments that help us remember Jose Luis together.',
     caption: 'A shared place to gather what we carry with us.',
     media_urls: [],
     created_at: new Date().toISOString(),
@@ -171,26 +158,25 @@ function App() {
   return (
     <main>
       <nav className="nav" aria-label="Main navigation">
-        <a href="#top" className="brand"><Heart size={18} /> José Luis Andreu</a>
+        <a href="#top" className="brand">Jose Luis Andreu</a>
         <div>
           <a href="#share">Share</a>
           <a href="#memories">Memories</a>
-          <a href="#videos">Interviews</a>
         </div>
       </nav>
 
       <header id="top" className="hero">
         <div className="hero-copy" data-reveal>
           <p className="eyebrow">In loving memory</p>
-          <h1>José Luis Andreu</h1>
+          <h1>Jose Luis Andreu</h1>
+          <p className="life-dates">4/26/1954 - 06/14/2026</p>
           <p className="lede">A public place for family and friends to remember him, share stories, and preserve the photos and videos that hold his presence.</p>
           <div className="hero-actions">
             <a className="button primary" href="#share"><Send size={18} /> Share a Memory</a>
-            <a className="button ghost" href="#videos"><PlayCircle size={18} /> Watch His Interviews</a>
           </div>
         </div>
         <figure className="hero-photo" data-reveal>
-          <img src="/hero.jpg" alt="José Luis Andreu holding a gold chalice in a church" />
+          <img src="/hero.jpg" alt="Jose Luis Andreu holding a gold chalice in a church" />
         </figure>
       </header>
 
@@ -214,7 +200,7 @@ function App() {
         <form onSubmit={handleSubmit} className="memory-form" data-reveal>
           <label>Name <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Your name" /></label>
           <label>Relationship <input value={form.relationship} onChange={(e) => setForm({ ...form, relationship: e.target.value })} placeholder="Friend, cousin, coworker…" /></label>
-          <label>Memory <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Share a memory of José Luis…" rows="6" /></label>
+          <label>Memory <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder="Share a memory of Jose Luis…" rows="6" /></label>
           <label>Caption for photos/videos <input value={form.caption} onChange={(e) => setForm({ ...form, caption: e.target.value })} placeholder="Where/when was this?" /></label>
           <label className="file-box"><Upload size={20} /> Photos or videos
             <input type="file" multiple accept="image/*,video/mp4,video/quicktime,video/*" onChange={(e) => setFiles(Array.from(e.target.files || []))} />
@@ -227,7 +213,7 @@ function App() {
 
       <section id="memories" className="section" data-reveal>
         <p className="section-kicker">Memory wall</p>
-        <h2>Stories shared for José Luis</h2>
+        <h2>Stories shared for Jose Luis</h2>
         {loading ? <p>Loading memories…</p> : (
           <div className="memory-wall">
             {memories.map((memory) => (
@@ -265,26 +251,9 @@ function App() {
         )}
       </section>
 
-      <section id="videos" className="section videos-section" data-reveal>
-        <p className="section-kicker">In his own words</p>
-        <h2>Interviews with José Luis</h2>
-        <p className="section-intro">These conversations preserve his voice, his stories, and the way he carried himself — something family and friends can return to whenever they need to hear him again.</p>
-        <div className="videos">
-          {interviews.map((video) => (
-            <article className="video-card" key={video.videoId} data-reveal>
-              <div className="iframe-wrap">
-                <iframe src={`https://www.youtube.com/embed/${video.videoId}`} title={video.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
-              </div>
-              <h3><Video size={18} /> {video.title}</h3>
-              <a href={video.url} target="_blank" rel="noreferrer">Open on YouTube</a>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <footer className="site-footer">
-        <p>Made as a place to remember José Luis Andreu.</p>
-        <a href="mailto:?subject=Memories of José Luis Andreu&body=Please visit joseluisandreu.com to share your memories, photos, and videos."><Mail size={16} /> Invite someone to share</a>
+        <p>Made as a place to remember Jose Luis Andreu.</p>
+        <a href="mailto:?subject=Memories of Jose Luis Andreu&body=Please visit joseluisandreu.com to share your memories, photos, and videos."><Mail size={16} /> Invite someone to share</a>
       </footer>
     </main>
   );

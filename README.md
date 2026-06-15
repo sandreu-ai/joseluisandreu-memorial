@@ -1,4 +1,4 @@
-# José Luis Andreu Memorial Website
+# Jose Luis Andreu Memorial Website
 
 A public memorial site for `joseluisandreu.com` where friends and family can:
 
@@ -6,7 +6,7 @@ A public memorial site for `joseluisandreu.com` where friends and family can:
 - share memories immediately
 - upload photos and videos directly
 - view a public memory wall and gallery
-- watch interview videos embedded from YouTube
+
 
 ## Local development
 
