@@ -425,8 +425,19 @@ function App() {
           <div className="memory-wall">
             {memories.map((memory) => (
               <article className="memory-card" key={memory.id} data-reveal>
-                <p className="memory-message">“{memory.message}”</p>
-                {memory.caption && <p className="caption">{memory.caption}</p>}
+                <div>
+                  <p className="memory-message">“{memory.message}”</p>
+                  {memory.caption && <p className="caption">{memory.caption}</p>}
+                  {memory.media_urls?.length > 0 && (
+                    <div className="memory-card-media" aria-label="Photos and videos shared with this memory">
+                      {memory.media_urls.map((item, index) => (
+                        <figure key={`${memory.id}-${item.url}-${index}`}>
+                          {item.type?.startsWith('video/') ? <video src={item.url} controls /> : <img src={item.url} alt={memory.caption || t.gallery.alt(memory.name)} />}
+                        </figure>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <footer>
                   <strong>{memory.name}</strong>
                   {memory.relationship && <span>{memory.relationship}</span>}
