@@ -277,12 +277,12 @@ h3 { font-size: 1.28rem; letter-spacing: -0.025em; }
 }
 .tribute-copy blockquote {
   background:
-    linear-gradient(135deg, rgba(24, 19, 15, 0.88), rgba(33, 27, 22, 0.94)),
-    url('/tribute-background.jfif') right 12% center / min(68%, 360px) no-repeat;
-  background-blend-mode: multiply;
+    linear-gradient(135deg, rgba(24, 19, 15, 0.58), rgba(33, 27, 22, 0.7)),
+    url('/tribute-background.jfif') center / cover no-repeat;
   border-left: 4px solid var(--gold-soft);
   border-radius: 22px;
   break-inside: avoid;
+  box-shadow: inset 0 0 0 1000px rgba(33, 27, 22, 0.1);
   color: #fff6e7;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.18rem, 1.7vw, 1.48rem);
@@ -290,6 +290,7 @@ h3 { font-size: 1.28rem; letter-spacing: -0.025em; }
   margin: 8px 0 1.15em;
   overflow: hidden;
   padding: clamp(22px, 3vw, 34px);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.42);
 }
 .tribute-copy cite {
   color: #f2c777;
