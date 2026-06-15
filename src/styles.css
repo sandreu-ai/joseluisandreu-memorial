@@ -71,7 +71,7 @@ a { color: inherit; }
   top: 0;
   z-index: 20;
 }
-.nav-links { display: flex; gap: 10px; }
+.nav-links { align-items: center; display: flex; gap: 10px; }
 .nav a, .language-toggle {
   background: transparent;
   border: 0;
@@ -437,8 +437,9 @@ input:focus, textarea:focus { background: #fff; border-color: var(--gold); box-s
 }
 
 @media (max-width: 620px) {
-  .nav { align-items: flex-end; flex-direction: column; gap: 8px; min-height: 0; padding-bottom: 14px; padding-top: 14px; position: static; }
-  .nav-links { flex-wrap: wrap; justify-content: flex-end; }
+  .nav { gap: 8px; justify-content: center; min-height: 0; overflow-x: auto; padding-bottom: 14px; padding-top: 14px; position: static; }
+  .nav-links { flex-wrap: nowrap; justify-content: center; }
+  .nav a, .language-toggle { font-size: 0.82rem; padding: 9px 10px; white-space: nowrap; }
   .hero-caption h1 { font-size: 3.45rem; }
   .section, .hero { padding-left: 22px; padding-right: 22px; }
   .hero::before { border-radius: 30px; inset: 10px; }
