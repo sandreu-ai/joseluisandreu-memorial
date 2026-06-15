@@ -22,8 +22,7 @@ const tributeParagraphs = [
   'Somos testigos de su infatigable celo por la misión, de su disponibilidad constante para ir donde la Iglesia lo necesitara y de su profundo amor por Cristo y por las personas que el Señor puso en su camino. Su mayor deseo era que otros pudieran encontrarse con Jesucristo y experimentar su amor y su misericordia.',
   'Para muchos, José Luis fue mucho más que un amigo o un catequista; fue una verdadera figura paterna. Con su sabiduría, su cercanía y su amor sincero, acompañó a innumerables personas a lo largo de sus vidas. Muchos encontraron en él una palabra de ánimo, un consejo oportuno y el cariño de un padre.',
   'Damos gracias a Dios por el regalo de su vida, por su testimonio de fe y por el amor que sembró en su familia, en la Iglesia y en todos aquellos que tuvieron la gracia de conocerlo.',
-  'En estos momentos difíciles, muchas personas nos han preguntado cómo pueden apoyar a nuestra familia. Por ello, hemos creado este espacio para quienes deseen colaborar voluntariamente con los gastos funerarios y otros gastos relacionados con su despedida.',
-  'Toda ayuda será recibida con sincera gratitud. Sin embargo, les pedimos sobre todo sus oraciones por el eterno descanso de nuestro padre y por el consuelo y la fortaleza de nuestra madre, de sus hijos, de sus nietos y de toda nuestra familia.',
+  'En estos momentos difíciles, muchas personas nos han preguntado cómo pueden apoyar a nuestra familia. Les pedimos sobre todo sus oraciones por el eterno descanso de nuestro padre y por el consuelo y la fortaleza de nuestra madre, de sus hijos, de sus nietos y de toda nuestra familia.',
   'Agradecemos de corazón cada oración, mensaje, recuerdo y muestra de cariño. Confiamos en la promesa de Cristo:',
 ];
 
