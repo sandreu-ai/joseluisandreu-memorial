@@ -66,6 +66,7 @@ const content = {
       kicker: 'Memory wall',
       title: 'Stories of Jose Luis shared',
       loading: 'Loading memories…',
+      empty: 'No stories have been shared yet. Be the first to add a memory, prayer, photo, or video.',
     },
     gallery: {
       kicker: 'Photos & videos',
@@ -155,6 +156,7 @@ const content = {
       kicker: 'Muro de recuerdos',
       title: 'Historias compartidas por Jose Luis',
       loading: 'Cargando recuerdos…',
+      empty: 'Todavía no se han compartido historias. Sé el primero en agregar un recuerdo, una oración, una foto o un video.',
     },
     gallery: {
       kicker: 'Fotos y videos',
@@ -421,7 +423,12 @@ function App() {
       <section id="memories" className="section" data-reveal>
         <p className="section-kicker">{t.memories.kicker}</p>
         <h2>{t.memories.title}</h2>
-        {loading ? <p>{t.memories.loading}</p> : (
+        {loading ? <p>{t.memories.loading}</p> : memories.length === 0 ? (
+          <div className="empty memory-empty">
+            <p>{t.memories.empty}</p>
+            <a className="button ghost" href="#share">{t.hero.cta}</a>
+          </div>
+        ) : (
           <div className="memory-wall">
             {memories.map((memory) => (
               <article className="memory-card" key={memory.id} data-reveal>
