@@ -309,7 +309,18 @@ h3 { font-size: 1.28rem; letter-spacing: -0.025em; }
   font-size: clamp(1.28rem, 2vw, 1.8rem);
   line-height: 1.35;
 }
-.intro p:last-child, .section-intro, .share-grid > div > p {
+.intro-copy {
+  color: var(--muted);
+  display: grid;
+  gap: 1.05rem;
+  font-size: 1.14rem;
+  line-height: 1.82;
+  margin: 0 auto;
+  max-width: 880px;
+  text-wrap: pretty;
+}
+.intro-copy p { margin: 0; }
+.section-intro, .share-grid > div > p {
   color: var(--muted);
   font-size: 1.14rem;
   line-height: 1.82;

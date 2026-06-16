@@ -37,8 +37,12 @@ const content = {
     },
     intro: {
       kicker: 'For everyone who knew him',
-      title: 'Bring the memories together.',
-      body: 'Stories can live in texts, camera rolls, old phones, group chats, and quiet conversations. This site gathers them into one lasting place — immediately visible, public, and easy to share.',
+      paragraphs: [
+        'My siblings and I have found great consolation in the stories shared about our father—his sense of humor, acts of kindness, zeal for evangelization, wisdom, and even his memorable jokes.',
+        'We hope this page will become a place that our family can return to for years to come—a collection of memories that we will treasure and revisit often.',
+        'All messages, photos, videos, stories, and prayers are welcome. If you have a memory of José Luis that you’d like to share, we would be deeply grateful to hear it.',
+        'Thank you all for your support, your prayers, and your encouraging messages during this difficult time. They have been a tremendous source of comfort to our family.',
+      ],
     },
     share: {
       kicker: 'Share something',
@@ -127,8 +131,12 @@ const content = {
     },
     intro: {
       kicker: 'Para todos los que lo conocieron',
-      title: 'Reunamos los recuerdos.',
-      body: 'Las historias pueden vivir en mensajes, álbumes, teléfonos antiguos, chats de grupo y conversaciones silenciosas. Este sitio las reúne en un lugar permanente: visible al instante, público y fácil de compartir.',
+      paragraphs: [
+        'Mis hermanos y yo hemos encontrado gran consuelo en las historias compartidas sobre nuestro padre: su sentido del humor, sus actos de bondad, su celo por la evangelización, su sabiduría e incluso sus chistes memorables.',
+        'Esperamos que esta página llegue a ser un lugar al que nuestra familia pueda volver durante muchos años: una colección de recuerdos que atesoraremos y visitaremos a menudo.',
+        'Todos los mensajes, fotos, videos, historias y oraciones son bienvenidos. Si tienes un recuerdo de José Luis que quisieras compartir, estaríamos profundamente agradecidos de escucharlo.',
+        'Gracias a todos por su apoyo, sus oraciones y sus mensajes de ánimo durante este momento difícil. Han sido una enorme fuente de consuelo para nuestra familia.',
+      ],
     },
     share: {
       kicker: 'Comparte algo',
@@ -446,8 +454,9 @@ function App() {
 
       <section className="intro section" data-reveal>
         <p className="section-kicker">{t.intro.kicker}</p>
-        <h2>{t.intro.title}</h2>
-        <p>{t.intro.body}</p>
+        <div className="intro-copy">
+          {t.intro.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        </div>
       </section>
 
       <section id="share" className="section share-grid">
