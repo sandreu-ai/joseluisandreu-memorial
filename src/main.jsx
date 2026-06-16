@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Camera, Mail, Send, Upload } from 'lucide-react';
 import { MEDIA_BUCKET, isSupabaseConfigured, supabase } from './supabase';
+import seedMemories from './seedMemories.json';
 import './styles.css';
 
 const content = {
@@ -204,10 +205,33 @@ function formatDate(value, language) {
   return new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(value));
 }
 
+function getCachedMemories() {
+  try {
+    const cached = localStorage.getItem('memorial-cached-memories');
+    if (!cached) return [];
+    const parsed = JSON.parse(cached);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.warn('Could not read cached memories', error);
+    return [];
+  }
+}
+
+function cacheMemories(nextMemories) {
+  try {
+    localStorage.setItem('memorial-cached-memories', JSON.stringify(nextMemories));
+  } catch (error) {
+    console.warn('Could not cache memories', error);
+  }
+}
+
 function App() {
   const [language, setLanguage] = useState('en');
-  const [memories, setMemories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [memories, setMemories] = useState(() => {
+    const cached = getCachedMemories();
+    return cached.length ? cached : seedMemories;
+  });
+  const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
   const [form, setForm] = useState({ name: '', relationship: '', message: '', caption: '' });
   const [files, setFiles] = useState([]);
@@ -218,38 +242,53 @@ function App() {
     [memories]
   );
 
-  async function loadMemories() {
-    setLoading(true);
+  async function loadMemories({ showLoading = memories.length === 0 } = {}) {
+    if (showLoading) setLoading(true);
     if (!isSupabaseConfigured) {
       const local = JSON.parse(localStorage.getItem('memorial-demo-memories') || '[]');
-      setMemories([...local, ...getDemoMemories(language)]);
+      const fallback = seedMemories.length ? seedMemories : getDemoMemories(language);
+      setMemories([...local, ...fallback]);
       setLoading(false);
       return;
     }
 
-    const { data, error } = await supabase
+    const timeout = new Promise((_, reject) => {
+      window.setTimeout(() => reject(new Error('Memory wall refresh timed out')), 4500);
+    });
+
+    const request = supabase
       .from('memories')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (error) {
+    try {
+      const { data, error } = await Promise.race([request, timeout]);
+      if (error) throw error;
+      const nextMemories = data || [];
+      setMemories(nextMemories);
+      cacheMemories(nextMemories);
+    } catch (error) {
       console.error(error);
-      setStatus(t.status.loadError);
-    } else {
-      setMemories(data || []);
+      if (memories.length === 0) setStatus(t.status.loadError);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
     document.documentElement.lang = language;
     setStatus('');
-    loadMemories();
+    loadMemories({ showLoading: false });
   }, [language]);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion) return undefined;
+
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('[data-reveal]').forEach((element) => element.classList.add('is-visible'));
+      return undefined;
+    }
 
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -260,7 +299,11 @@ function App() {
       { threshold: 0.14, rootMargin: '0px 0px -8% 0px' }
     );
 
-    document.querySelectorAll('[data-reveal]').forEach((element) => revealObserver.observe(element));
+    document.querySelectorAll('[data-reveal]').forEach((element) => {
+      const box = element.getBoundingClientRect();
+      if (box.top < window.innerHeight * 0.95 && box.bottom > 0) element.classList.add('is-visible');
+      revealObserver.observe(element);
+    });
 
     let frame = 0;
     const onScroll = () => {
@@ -319,7 +362,7 @@ function App() {
         setForm({ name: '', relationship: '', message: '', caption: '' });
         setFiles([]);
         setStatus(t.status.localAdded);
-        await loadMemories();
+        await loadMemories({ showLoading: false });
         return;
       }
 
@@ -333,10 +376,22 @@ function App() {
         media_urls: media,
       });
       if (error) throw error;
+      const optimisticMemory = {
+        id: memoryId,
+        name: form.name.trim(),
+        relationship: form.relationship.trim(),
+        message: form.message.trim(),
+        caption: form.caption.trim(),
+        media_urls: media,
+        created_at: new Date().toISOString(),
+      };
+      const optimisticMemories = [optimisticMemory, ...memories];
+      setMemories(optimisticMemories);
+      cacheMemories(optimisticMemories);
       setForm({ name: '', relationship: '', message: '', caption: '' });
       setFiles([]);
       setStatus(t.status.thankYou);
-      await loadMemories();
+      await loadMemories({ showLoading: false });
     } catch (error) {
       console.error(error);
       setStatus(error.message || t.status.submitError);
@@ -420,7 +475,7 @@ function App() {
         </form>
       </section>
 
-      <section id="memories" className="section" data-reveal>
+      <section id="memories" className="section memory-section">
         <p className="section-kicker">{t.memories.kicker}</p>
         <h2>{t.memories.title}</h2>
         {loading ? <p>{t.memories.loading}</p> : memories.length === 0 ? (
@@ -431,7 +486,7 @@ function App() {
         ) : (
           <div className="memory-wall">
             {memories.map((memory) => (
-              <article className="memory-card" key={memory.id} data-reveal>
+              <article className="memory-card" key={memory.id}>
                 <div>
                   <p className="memory-message">“{memory.message}”</p>
                   {memory.caption && <p className="caption">{memory.caption}</p>}
@@ -439,7 +494,7 @@ function App() {
                     <div className="memory-card-media" aria-label="Photos and videos shared with this memory">
                       {memory.media_urls.map((item, index) => (
                         <figure key={`${memory.id}-${item.url}-${index}`}>
-                          {item.type?.startsWith('video/') ? <video src={item.url} controls /> : <img src={item.url} alt={memory.caption || t.gallery.alt(memory.name)} />}
+                          {item.type?.startsWith('video/') ? <video src={item.url} controls preload="metadata" /> : <img src={item.url} alt={memory.caption || t.gallery.alt(memory.name)} loading="lazy" decoding="async" />}
                         </figure>
                       ))}
                     </div>
@@ -468,7 +523,7 @@ function App() {
           <div className="gallery">
             {galleryItems.map((item, index) => (
               <figure key={`${item.url}-${index}`} data-reveal>
-                {item.type?.startsWith('video/') ? <video src={item.url} controls /> : <img src={item.url} alt={item.memory.caption || t.gallery.alt(item.memory.name)} />}
+                {item.type?.startsWith('video/') ? <video src={item.url} controls preload="metadata" /> : <img src={item.url} alt={item.memory.caption || t.gallery.alt(item.memory.name)} loading="lazy" decoding="async" />}
                 <figcaption>{item.memory.caption || item.memory.name}</figcaption>
               </figure>
             ))}
