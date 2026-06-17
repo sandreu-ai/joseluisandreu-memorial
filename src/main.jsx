@@ -1,15 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Camera, Clock, Mail, MapPin, Send, Upload } from 'lucide-react';
+import { Camera, Clock, Heart, Mail, MapPin, Send, Upload } from 'lucide-react';
 import { MEDIA_BUCKET, isSupabaseConfigured, supabase } from './supabase';
 import seedMemories from './seedMemories.json';
 import './styles.css';
+
+const donationUrl = 'https://www.givesendgo.com/jos-luis-andreu-siervo-bueno-y-fiel?utm_source=sharelink&utm_medium=copy_link&utm_campaign=jos-luis-andreu-siervo-bueno-y-fiel';
 
 const content = {
   en: {
     languageName: 'English',
     switchLabel: 'Español',
-    nav: { tribute: 'Tribute', services: 'Services', share: 'Share', memories: 'Memories' },
+    nav: { tribute: 'Tribute', services: 'Services', donate: 'Donate', share: 'Share', memories: 'Memories' },
     hero: {
       eyebrow: 'In loving memory',
       name: 'Jose Luis Andreu',
@@ -17,6 +19,7 @@ const content = {
       alt: 'Jose Luis Andreu holding a gold chalice in a church',
       lede: 'A public place for family and friends to remember him, share stories, and preserve the photos and videos that hold his presence.',
       cta: 'Share a Memory',
+      donateCta: 'Support the Family',
     },
     tribute: {
       kicker: 'A testimony of faith and love',
@@ -140,7 +143,7 @@ const content = {
   es: {
     languageName: 'Español',
     switchLabel: 'English',
-    nav: { tribute: 'Tributo', services: 'Servicios', share: 'Compartir', memories: 'Recuerdos' },
+    nav: { tribute: 'Tributo', services: 'Servicios', donate: 'Donar', share: 'Compartir', memories: 'Recuerdos' },
     hero: {
       eyebrow: 'En memoria amorosa',
       name: 'Jose Luis Andreu',
@@ -148,6 +151,7 @@ const content = {
       alt: 'Jose Luis Andreu sosteniendo un cáliz dorado en una iglesia',
       lede: 'Un lugar público para que familiares y amigos lo recuerden, compartan historias y conserven las fotos y videos que guardan su presencia.',
       cta: 'Compartir un recuerdo',
+      donateCta: 'Apoyar a la familia',
     },
     tribute: {
       kicker: 'Un testimonio de fe y amor',
@@ -486,6 +490,7 @@ function App() {
         <div className="nav-links">
           <a href="#tribute">{t.nav.tribute}</a>
           <a href="#services">{t.nav.services}</a>
+          <a href={donationUrl} target="_blank" rel="noopener noreferrer">{t.nav.donate}</a>
           <a href="#share">{t.nav.share}</a>
           <a href="#memories">{t.nav.memories}</a>
         </div>
@@ -507,6 +512,7 @@ function App() {
           <p className="lede">{t.hero.lede}</p>
           <div className="hero-actions">
             <a className="button primary" href="#share"><Send size={18} /> {t.hero.cta}</a>
+            <a className="button donation" href={donationUrl} target="_blank" rel="noopener noreferrer"><Heart size={18} /> {t.hero.donateCta}</a>
           </div>
         </div>
       </header>
