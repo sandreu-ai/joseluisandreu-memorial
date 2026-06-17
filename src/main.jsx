@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Camera, Mail, Send, Upload } from 'lucide-react';
+import { Camera, Clock, Mail, MapPin, Send, Upload } from 'lucide-react';
 import { MEDIA_BUCKET, isSupabaseConfigured, supabase } from './supabase';
 import seedMemories from './seedMemories.json';
 import './styles.css';
@@ -9,7 +9,7 @@ const content = {
   en: {
     languageName: 'English',
     switchLabel: 'Español',
-    nav: { tribute: 'Tribute', share: 'Share', memories: 'Memories' },
+    nav: { tribute: 'Tribute', services: 'Services', share: 'Share', memories: 'Memories' },
     hero: {
       eyebrow: 'In loving memory',
       name: 'Jose Luis Andreu',
@@ -42,6 +42,43 @@ const content = {
         'We hope this page will become a place that our family can return to for years to come—a collection of memories that we will treasure and revisit often.',
         'All messages, photos, videos, stories, and prayers are welcome. If you have a memory of José Luis that you’d like to share, we would be deeply grateful to hear it.',
         'Thank you all for your support, your prayers, and your encouraging messages during this difficult time. They have been a tremendous source of comfort to our family.',
+      ],
+    },
+    services: {
+      kicker: 'Prayer and funeral schedule',
+      title: 'Service information',
+      note: 'All are welcome to join the family in prayer and remembrance.',
+      items: [
+        {
+          name: 'Rosary',
+          time: 'Tuesday–Friday at 7:30 p.m.',
+          location: 'St. Clara Gymnasium (Santa Clara Hall)',
+          address: '321 Calumet Ave, Dallas, TX 75211',
+        },
+        {
+          name: 'Vigil',
+          time: 'Sunday, June 21 at 9:30 p.m.',
+          location: 'Nuestra Señora del Pilar',
+          address: '4455 W Illinois Ave, Dallas, TX 75211',
+        },
+        {
+          name: 'Mass',
+          time: 'Monday, June 22 at 9:00 a.m.',
+          location: 'Nuestra Señora del Pilar',
+          address: '4455 W Illinois Ave, Dallas, TX 75211',
+        },
+        {
+          name: 'Burial',
+          time: 'Monday, June 22 at 11:30 a.m.',
+          location: 'Little Bethel Memorial Park',
+          address: '1803 Cedar Hill Rd, Duncanville, TX 75137',
+        },
+        {
+          name: 'Ágape',
+          time: 'Monday, June 22 from 1:30 p.m. – 3:30 p.m.',
+          location: 'St. Clara Gymnasium (Santa Clara Hall)',
+          address: '321 Calumet Ave., Dallas, TX 75211',
+        },
       ],
     },
     share: {
@@ -103,7 +140,7 @@ const content = {
   es: {
     languageName: 'Español',
     switchLabel: 'English',
-    nav: { tribute: 'Tributo', share: 'Compartir', memories: 'Recuerdos' },
+    nav: { tribute: 'Tributo', services: 'Servicios', share: 'Compartir', memories: 'Recuerdos' },
     hero: {
       eyebrow: 'En memoria amorosa',
       name: 'Jose Luis Andreu',
@@ -136,6 +173,43 @@ const content = {
         'Esperamos que esta página llegue a ser un lugar al que nuestra familia pueda volver durante muchos años: una colección de recuerdos que atesoraremos y visitaremos a menudo.',
         'Todos los mensajes, fotos, videos, historias y oraciones son bienvenidos. Si tienes un recuerdo de José Luis que quisieras compartir, estaríamos profundamente agradecidos de escucharlo.',
         'Gracias a todos por su apoyo, sus oraciones y sus mensajes de ánimo durante este momento difícil. Han sido una enorme fuente de consuelo para nuestra familia.',
+      ],
+    },
+    services: {
+      kicker: 'Rosario, vigilia, misa y entierro',
+      title: 'Información de servicios',
+      note: 'Todos son bienvenidos a acompañar a la familia en oración y recuerdo.',
+      items: [
+        {
+          name: 'Rosario',
+          time: 'martes–viernes a las 7:30 p. m.',
+          location: 'Gimnasio de St. Clara (Santa Clara Hall)',
+          address: '321 Calumet Ave, Dallas, TX 75211',
+        },
+        {
+          name: 'Vigilia',
+          time: 'domingo 21 de junio a las 9:30 p. m.',
+          location: 'Nuestra Señora del Pilar',
+          address: '4455 W Illinois Ave, Dallas, TX 75211',
+        },
+        {
+          name: 'Misa',
+          time: 'lunes 22 de junio a las 9:00 a. m.',
+          location: 'Nuestra Señora del Pilar',
+          address: '4455 W Illinois Ave, Dallas, TX 75211',
+        },
+        {
+          name: 'Entierro',
+          time: 'lunes 22 de junio a las 11:30 AM',
+          location: 'Little Bethel Memorial Park',
+          address: '1803 Cedar Hill Rd, Duncanville, TX 75137',
+        },
+        {
+          name: 'Ágape',
+          time: 'lunes 22 de junio desde las 1:30 PM – 3:30 PM',
+          location: 'Gimnasio de St. Clara (Santa Clara Hall)',
+          address: '321 Calumet Ave., Dallas, TX 75211',
+        },
       ],
     },
     share: {
@@ -411,6 +485,7 @@ function App() {
       <nav className="nav" aria-label="Main navigation">
         <div className="nav-links">
           <a href="#tribute">{t.nav.tribute}</a>
+          <a href="#services">{t.nav.services}</a>
           <a href="#share">{t.nav.share}</a>
           <a href="#memories">{t.nav.memories}</a>
         </div>
@@ -456,6 +531,25 @@ function App() {
         <p className="section-kicker">{t.intro.kicker}</p>
         <div className="intro-copy">
           {t.intro.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        </div>
+      </section>
+
+      <section id="services" className="section services-section" data-reveal>
+        <div className="services-card">
+          <div className="services-heading">
+            <p className="section-kicker">{t.services.kicker}</p>
+            <h2>{t.services.title}</h2>
+            <p>{t.services.note}</p>
+          </div>
+          <div className="service-list">
+            {t.services.items.map((item) => (
+              <article className="service-item" key={`${item.name}-${item.time}`}>
+                <h3>{item.name}</h3>
+                <p className="service-line"><Clock size={17} aria-hidden="true" /> {item.time}</p>
+                <p className="service-location"><MapPin size={17} aria-hidden="true" /> <span><strong>{item.location}</strong>{item.address}</span></p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
