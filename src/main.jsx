@@ -291,6 +291,21 @@ function formatDate(value, language) {
   return new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(value));
 }
 
+function getOptimizedImageUrl(url, { width = 900, height = 675, quality = 72 } = {}) {
+  if (!url || !url.includes('/storage/v1/object/public/')) return url;
+
+  try {
+    const optimized = new URL(url.replace('/storage/v1/object/public/', '/storage/v1/render/image/public/'));
+    optimized.searchParams.set('width', String(width));
+    optimized.searchParams.set('height', String(height));
+    optimized.searchParams.set('quality', String(quality));
+    optimized.searchParams.set('resize', 'cover');
+    return optimized.toString();
+  } catch {
+    return url;
+  }
+}
+
 function getCachedMemories() {
   try {
     const cached = localStorage.getItem('memorial-cached-memories');
@@ -603,7 +618,7 @@ function App() {
                     <div className="memory-card-media" aria-label="Photos and videos shared with this memory">
                       {memory.media_urls.map((item, index) => (
                         <figure key={`${memory.id}-${item.url}-${index}`}>
-                          {item.type?.startsWith('video/') ? <video src={item.url} controls preload="metadata" /> : <img src={item.url} alt={memory.caption || t.gallery.alt(memory.name)} loading="lazy" decoding="async" />}
+                          {item.type?.startsWith('video/') ? <video src={item.url} controls preload="metadata" /> : <img src={getOptimizedImageUrl(item.url, { width: 520, height: 390 })} alt={memory.caption || t.gallery.alt(memory.name)} loading="lazy" decoding="async" />}
                         </figure>
                       ))}
                     </div>
@@ -632,7 +647,7 @@ function App() {
           <div className="gallery">
             {galleryItems.map((item, index) => (
               <figure key={`${item.url}-${index}`} data-reveal>
-                {item.type?.startsWith('video/') ? <video src={item.url} controls preload="metadata" /> : <img src={item.url} alt={item.memory.caption || t.gallery.alt(item.memory.name)} loading="lazy" decoding="async" />}
+                {item.type?.startsWith('video/') ? <video src={item.url} controls preload="metadata" /> : <img src={getOptimizedImageUrl(item.url, { width: 900, height: 675 })} alt={item.memory.caption || t.gallery.alt(item.memory.name)} loading="lazy" decoding="async" />}
                 <figcaption>{item.memory.caption || item.memory.name}</figcaption>
               </figure>
             ))}
