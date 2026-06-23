@@ -73,8 +73,8 @@ const content = {
         {
           name: 'Burial',
           time: 'Monday, June 22 at 11:30 a.m.',
-          location: 'Little Bethel Memorial Park',
-          address: '1803 Cedar Hill Rd, Duncanville, TX 75137',
+          location: 'Holy Redeemer Catholic Cemetery',
+          address: 'DeSoto, TX',
         },
         {
           name: 'Ágape',
@@ -205,8 +205,8 @@ const content = {
         {
           name: 'Entierro',
           time: 'lunes 22 de junio a las 11:30 AM',
-          location: 'Little Bethel Memorial Park',
-          address: '1803 Cedar Hill Rd, Duncanville, TX 75137',
+          location: 'Holy Redeemer Catholic Cemetery',
+          address: 'DeSoto, TX',
         },
         {
           name: 'Ágape',
