@@ -1,17 +1,40 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Camera, Clock, Heart, Mail, MapPin, Send, Upload } from 'lucide-react';
+import { Camera, Clock, Heart, Mail, MapPin, PlayCircle, Send, Upload } from 'lucide-react';
 import { MEDIA_BUCKET, isSupabaseConfigured, supabase } from './supabase';
 import seedMemories from './seedMemories.json';
 import './styles.css';
 
 const donationUrl = 'https://www.givesendgo.com/jos-luis-andreu-siervo-bueno-y-fiel?utm_source=sharelink&utm_medium=copy_link&utm_campaign=jos-luis-andreu-siervo-bueno-y-fiel';
 
+const tributeVideos = [
+  {
+    id: 'cq6_MSI4CWQ',
+    title: 'Tribute livestream I',
+    url: 'https://www.youtube.com/live/cq6_MSI4CWQ?is=uh_r0uj0uDrBSnM6',
+  },
+  {
+    id: 'VZPikVQWtus',
+    title: 'Tribute livestream II',
+    url: 'https://www.youtube.com/live/VZPikVQWtus?is=e6J_EetfWxrrtl0n',
+  },
+  {
+    id: '-lQrC_de_EE',
+    title: 'Tribute livestream III',
+    url: 'https://www.youtube.com/live/-lQrC_de_EE?is=xYeNP-bP6zS4X3xb',
+  },
+  {
+    id: 'YtAF9c57SEg',
+    title: 'Tribute livestream IV',
+    url: 'https://www.youtube.com/live/YtAF9c57SEg?is=mvqcmzkK7D8iQlrc',
+  },
+];
+
 const content = {
   en: {
     languageName: 'English',
     switchLabel: 'Español',
-    nav: { tribute: 'Tribute', services: 'Services', donate: 'Donate', share: 'Share', memories: 'Memories' },
+    nav: { tribute: 'Tribute', services: 'Services', videos: 'Videos', donate: 'Donate', share: 'Share', memories: 'Memories' },
     hero: {
       eyebrow: 'In loving memory',
       name: 'Jose Luis Andreu',
@@ -84,6 +107,12 @@ const content = {
         },
       ],
     },
+    videos: {
+      kicker: 'Livestream recordings',
+      title: 'Services and moments of prayer',
+      body: 'These recordings are gathered here so family and friends can return to the prayers, services, and moments of remembrance wherever they are.',
+      watch: 'Watch on YouTube',
+    },
     share: {
       kicker: 'Share something',
       title: 'Write a memory. Add a photo or video.',
@@ -143,7 +172,7 @@ const content = {
   es: {
     languageName: 'Español',
     switchLabel: 'English',
-    nav: { tribute: 'Tributo', services: 'Servicios', donate: 'Donar', share: 'Compartir', memories: 'Recuerdos' },
+    nav: { tribute: 'Tributo', services: 'Servicios', videos: 'Videos', donate: 'Donar', share: 'Compartir', memories: 'Recuerdos' },
     hero: {
       eyebrow: 'En memoria amorosa',
       name: 'Jose Luis Andreu',
@@ -215,6 +244,12 @@ const content = {
           address: '321 Calumet Ave., Dallas, TX 75211',
         },
       ],
+    },
+    videos: {
+      kicker: 'Transmisiones grabadas',
+      title: 'Servicios y momentos de oración',
+      body: 'Estas grabaciones quedan reunidas aquí para que familiares y amigos puedan volver a las oraciones, los servicios y los momentos de recuerdo desde donde estén.',
+      watch: 'Ver en YouTube',
     },
     share: {
       kicker: 'Comparte algo',
@@ -505,6 +540,7 @@ function App() {
         <div className="nav-links">
           <a href="#tribute">{t.nav.tribute}</a>
           <a href="#services">{t.nav.services}</a>
+          <a href="#videos">{t.nav.videos}</a>
           <a href={donationUrl} target="_blank" rel="noopener noreferrer">{t.nav.donate}</a>
           <a href="#share">{t.nav.share}</a>
           <a href="#memories">{t.nav.memories}</a>
@@ -571,6 +607,33 @@ function App() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section id="videos" className="section videos-section" data-reveal>
+        <div className="section-heading-row videos-heading">
+          <div>
+            <p className="section-kicker">{t.videos.kicker}</p>
+            <h2>{t.videos.title}</h2>
+            <p>{t.videos.body}</p>
+          </div>
+          <PlayCircle aria-hidden="true" />
+        </div>
+        <div className="video-grid">
+          {tributeVideos.map((video) => (
+            <article className="video-card" key={video.id}>
+              <div className="video-frame">
+                <iframe
+                  src={`https://www.youtube.com/embed/${video.id}`}
+                  title={video.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  loading="lazy"
+                />
+              </div>
+              <a href={video.url} target="_blank" rel="noopener noreferrer">{t.videos.watch}</a>
+            </article>
+          ))}
         </div>
       </section>
 
