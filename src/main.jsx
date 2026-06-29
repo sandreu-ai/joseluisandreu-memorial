@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Camera, Clock, Heart, Mail, MapPin, PlayCircle, Send, Upload } from 'lucide-react';
+import { Camera, ChevronLeft, ChevronRight, Clock, Heart, Mail, MapPin, PlayCircle, Send, Upload, X } from 'lucide-react';
 import { MEDIA_BUCKET, isSupabaseConfigured, supabase } from './supabase';
 import seedMemories from './seedMemories.json';
 import './styles.css';
@@ -34,7 +34,7 @@ const content = {
   en: {
     languageName: 'English',
     switchLabel: 'Español',
-    nav: { tribute: 'Tribute', services: 'Services', videos: 'Videos', donate: 'Donate', share: 'Share', memories: 'Memories' },
+    nav: { tribute: 'Tribute', services: 'Services', videos: 'Videos', donate: 'Donate', share: 'Share', memories: 'Memories', gallery: 'Gallery' },
     hero: {
       eyebrow: 'In loving memory',
       name: 'Jose Luis Andreu',
@@ -144,9 +144,14 @@ const content = {
     },
     gallery: {
       kicker: 'Photos & videos',
-      title: 'Shared moments',
+      title: 'Shared gallery',
       empty: 'Photos and videos will appear here as people share them.',
       alt: (name) => `Shared memory from ${name}`,
+      open: 'Open larger view',
+      close: 'Close gallery viewer',
+      previous: 'Previous photo or video',
+      next: 'Next photo or video',
+      count: (current, total) => `${current} of ${total}`,
     },
     footer: {
       made: 'Made as a place to remember Jose Luis Andreu.',
@@ -172,7 +177,7 @@ const content = {
   es: {
     languageName: 'Español',
     switchLabel: 'English',
-    nav: { tribute: 'Tributo', services: 'Servicios', videos: 'Videos', donate: 'Donar', share: 'Compartir', memories: 'Recuerdos' },
+    nav: { tribute: 'Tributo', services: 'Servicios', videos: 'Videos', donate: 'Donar', share: 'Compartir', memories: 'Recuerdos', gallery: 'Galería' },
     hero: {
       eyebrow: 'En memoria amorosa',
       name: 'Jose Luis Andreu',
@@ -282,9 +287,14 @@ const content = {
     },
     gallery: {
       kicker: 'Fotos y videos',
-      title: 'Momentos compartidos',
+      title: 'Galería compartida',
       empty: 'Las fotos y videos aparecerán aquí a medida que las personas los compartan.',
       alt: (name) => `Recuerdo compartido por ${name}`,
+      open: 'Abrir vista ampliada',
+      close: 'Cerrar visor de galería',
+      previous: 'Foto o video anterior',
+      next: 'Siguiente foto o video',
+      count: (current, total) => `${current} de ${total}`,
     },
     footer: {
       made: 'Hecho como un lugar para recordar a Jose Luis Andreu.',
@@ -371,12 +381,14 @@ function App() {
   const [status, setStatus] = useState('');
   const [form, setForm] = useState({ name: '', relationship: '', message: '', caption: '' });
   const [files, setFiles] = useState([]);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
   const t = content[language];
 
   const galleryItems = useMemo(
     () => memories.flatMap((memory) => (memory.media_urls || []).map((item) => ({ ...item, memory }))),
     [memories]
   );
+  const activeGalleryItem = lightboxIndex === null ? null : galleryItems[lightboxIndex];
 
   async function loadMemories({ showLoading = memories.length === 0 } = {}) {
     if (showLoading) setLoading(true);
@@ -416,6 +428,28 @@ function App() {
     setStatus('');
     loadMemories({ showLoading: false });
   }, [language]);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return undefined;
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setLightboxIndex(null);
+      if (event.key === 'ArrowLeft') setLightboxIndex((index) => (index === null ? index : (index - 1 + galleryItems.length) % galleryItems.length));
+      if (event.key === 'ArrowRight') setLightboxIndex((index) => (index === null ? index : (index + 1) % galleryItems.length));
+    };
+
+    document.body.classList.add('lightbox-open');
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.classList.remove('lightbox-open');
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [lightboxIndex, galleryItems.length]);
+
+  useEffect(() => {
+    if (lightboxIndex !== null && lightboxIndex >= galleryItems.length) setLightboxIndex(null);
+  }, [galleryItems.length, lightboxIndex]);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -544,6 +578,7 @@ function App() {
           <a href={donationUrl} target="_blank" rel="noopener noreferrer">{t.nav.donate}</a>
           <a href="#share">{t.nav.share}</a>
           <a href="#memories">{t.nav.memories}</a>
+          <a href="#gallery">{t.nav.gallery}</a>
         </div>
         <button className="language-toggle" type="button" onClick={() => setLanguage(language === 'en' ? 'es' : 'en')} aria-label={`Switch language to ${t.switchLabel}`}>
           {t.switchLabel}
@@ -710,13 +745,43 @@ function App() {
           <div className="gallery">
             {galleryItems.map((item, index) => (
               <figure key={`${item.url}-${index}`} data-reveal>
-                {item.type?.startsWith('video/') ? <video src={item.url} controls preload="metadata" /> : <img src={getOptimizedImageUrl(item.url, { width: 900, height: 675 })} alt={item.memory.caption || t.gallery.alt(item.memory.name)} loading="lazy" decoding="async" />}
+                <button className="gallery-media-button" type="button" onClick={() => setLightboxIndex(index)} aria-label={`${t.gallery.open}: ${item.memory.caption || item.memory.name}`}>
+                  {item.type?.startsWith('video/') ? <video src={item.url} preload="metadata" /> : <img src={getOptimizedImageUrl(item.url, { width: 900, height: 675 })} alt={item.memory.caption || t.gallery.alt(item.memory.name)} loading="lazy" decoding="async" />}
+                  <span className="gallery-expand-label">{t.gallery.open}</span>
+                </button>
                 <figcaption>{item.memory.caption || item.memory.name}</figcaption>
               </figure>
             ))}
           </div>
         )}
       </section>
+
+      {activeGalleryItem && (
+        <div className="lightbox" role="dialog" aria-modal="true" aria-label={t.gallery.title} onMouseDown={(event) => {
+          if (event.target === event.currentTarget) setLightboxIndex(null);
+        }}>
+          <div className="lightbox-panel">
+            <button className="lightbox-close" type="button" onClick={() => setLightboxIndex(null)} aria-label={t.gallery.close}><X aria-hidden="true" /></button>
+            <div className="lightbox-media-wrap">
+              {activeGalleryItem.type?.startsWith('video/') ? (
+                <video src={activeGalleryItem.url} controls preload="metadata" autoPlay />
+              ) : (
+                <img src={getOptimizedImageUrl(activeGalleryItem.url, { width: 1600, height: 1200, quality: 82 })} alt={activeGalleryItem.memory.caption || t.gallery.alt(activeGalleryItem.memory.name)} />
+              )}
+            </div>
+            <div className="lightbox-meta">
+              <p>{activeGalleryItem.memory.caption || activeGalleryItem.memory.message}</p>
+              <span>{activeGalleryItem.memory.name} · {t.gallery.count(lightboxIndex + 1, galleryItems.length)}</span>
+            </div>
+            {galleryItems.length > 1 && (
+              <>
+                <button className="lightbox-nav lightbox-prev" type="button" onClick={() => setLightboxIndex((lightboxIndex - 1 + galleryItems.length) % galleryItems.length)} aria-label={t.gallery.previous}><ChevronLeft aria-hidden="true" /></button>
+                <button className="lightbox-nav lightbox-next" type="button" onClick={() => setLightboxIndex((lightboxIndex + 1) % galleryItems.length)} aria-label={t.gallery.next}><ChevronRight aria-hidden="true" /></button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       <footer className="site-footer">
         <p>{t.footer.made}</p>

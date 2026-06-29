@@ -30,6 +30,7 @@ body {
     linear-gradient(135deg, #fffaf2 0%, var(--paper) 44%, #efe1ce 100%);
   overflow-x: hidden;
 }
+body.lightbox-open { overflow: hidden; }
 body::before {
   background-image:
     linear-gradient(90deg, rgba(251, 247, 239, 0.88), rgba(251, 247, 239, 0.58) 48%, rgba(251, 247, 239, 0.9)),
@@ -574,8 +575,127 @@ input:focus, textarea:focus { background: #fff; border-color: var(--gold); box-s
   margin-top: 34px;
 }
 .gallery figure { background: var(--surface-strong); border: 1px solid rgba(255,255,255,0.62); border-radius: 24px; box-shadow: 0 18px 50px rgba(50, 34, 18, 0.07); margin: 0; overflow: hidden; }
-.gallery img, .gallery video { aspect-ratio: 4 / 3; display: block; object-fit: cover; width: 100%; }
+.gallery-media-button {
+  background: #17130f;
+  border: 0;
+  cursor: zoom-in;
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  text-align: inherit;
+  width: 100%;
+}
+.gallery img, .gallery video { aspect-ratio: 4 / 3; display: block; object-fit: cover; transition: transform 260ms ease, filter 260ms ease; width: 100%; }
+.gallery-media-button:hover img,
+.gallery-media-button:focus-visible img,
+.gallery-media-button:hover video,
+.gallery-media-button:focus-visible video { filter: brightness(0.74); transform: scale(1.04); }
+.gallery-media-button:focus-visible { outline: 3px solid rgba(185, 138, 58, 0.7); outline-offset: -3px; }
+.gallery-expand-label {
+  background: rgba(23, 19, 15, 0.78);
+  border: 1px solid rgba(255, 248, 237, 0.3);
+  border-radius: 999px;
+  color: #fff8ed;
+  font-size: 0.78rem;
+  font-weight: 850;
+  left: 50%;
+  opacity: 0;
+  padding: 8px 12px;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -42%);
+  transition: opacity 220ms ease, transform 220ms ease;
+  white-space: nowrap;
+}
+.gallery-media-button:hover .gallery-expand-label,
+.gallery-media-button:focus-visible .gallery-expand-label { opacity: 1; transform: translate(-50%, -50%); }
 .gallery figcaption { color: var(--muted); font-size: 0.92rem; font-weight: 730; padding: 12px 14px; }
+
+.lightbox {
+  align-items: center;
+  background: rgba(12, 9, 7, 0.82);
+  backdrop-filter: blur(18px);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 18px;
+  position: fixed;
+  z-index: 100;
+}
+.lightbox-panel {
+  align-items: center;
+  display: grid;
+  gap: 14px;
+  max-height: min(92vh, 980px);
+  max-width: min(94vw, 1180px);
+  position: relative;
+  width: 100%;
+}
+.lightbox-media-wrap {
+  align-items: center;
+  background: #0e0b09;
+  border: 1px solid rgba(255, 248, 237, 0.16);
+  border-radius: 26px;
+  box-shadow: 0 30px 110px rgba(0, 0, 0, 0.46);
+  display: flex;
+  justify-content: center;
+  max-height: calc(92vh - 140px);
+  overflow: hidden;
+}
+.lightbox-media-wrap img,
+.lightbox-media-wrap video {
+  display: block;
+  max-height: calc(92vh - 140px);
+  max-width: 100%;
+  object-fit: contain;
+  width: auto;
+}
+.lightbox-meta {
+  align-items: center;
+  color: #fff8ed;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+}
+.lightbox-meta p {
+  font-weight: 740;
+  line-height: 1.45;
+  margin: 0;
+}
+.lightbox-meta span {
+  color: #f4c878;
+  flex: 0 0 auto;
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+.lightbox-close,
+.lightbox-nav {
+  align-items: center;
+  background: rgba(255, 248, 237, 0.94);
+  border: 1px solid rgba(255, 248, 237, 0.4);
+  border-radius: 999px;
+  color: #17130f;
+  cursor: pointer;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  transition: transform 180ms ease, background 180ms ease;
+  width: 48px;
+  z-index: 2;
+}
+.lightbox-close:hover,
+.lightbox-nav:hover { background: #fff8ed; transform: scale(1.04); }
+.lightbox-close { right: 10px; top: 10px; }
+.lightbox-nav { top: 50%; transform: translateY(-50%); }
+.lightbox-nav:hover { transform: translateY(-50%) scale(1.04); }
+.lightbox-prev { left: 10px; }
+.lightbox-next { right: 10px; }
+.lightbox-close svg,
+.lightbox-nav svg { height: 25px; width: 25px; }
 
 .site-footer {
   align-items: flex-start;
