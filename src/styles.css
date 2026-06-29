@@ -66,14 +66,14 @@ a { color: inherit; }
   justify-content: center;
   left: 0;
   min-height: 0;
-  overflow-x: auto;
+  overflow-x: visible;
   padding: 14px 22px;
   position: static;
   right: 0;
   top: 0;
   z-index: 20;
 }
-.nav-links { align-items: center; display: flex; flex-wrap: nowrap; gap: 8px; justify-content: center; }
+.nav-links { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .nav a, .language-toggle {
   background: transparent;
   border: 0;
@@ -731,7 +731,7 @@ input:focus, textarea:focus { background: #fff; border-color: var(--gold); box-s
     padding: 0 clamp(22px, 5vw, 76px);
     position: sticky;
   }
-  .nav-links { gap: 10px; }
+  .nav-links { flex-wrap: nowrap; gap: 10px; }
   .nav a, .language-toggle { font-size: 0.92rem; padding: 10px 12px; }
   .language-toggle { padding-left: 16px; padding-right: 16px; }
   .section, .hero { padding-left: clamp(22px, 5vw, 76px); padding-right: clamp(22px, 5vw, 76px); }

@@ -576,9 +576,9 @@ function App() {
           <a href="#services">{t.nav.services}</a>
           <a href="#videos">{t.nav.videos}</a>
           <a href={donationUrl} target="_blank" rel="noopener noreferrer">{t.nav.donate}</a>
+          <a href="#gallery">{t.nav.gallery}</a>
           <a href="#share">{t.nav.share}</a>
           <a href="#memories">{t.nav.memories}</a>
-          <a href="#gallery">{t.nav.gallery}</a>
         </div>
         <button className="language-toggle" type="button" onClick={() => setLanguage(language === 'en' ? 'es' : 'en')} aria-label={`Switch language to ${t.switchLabel}`}>
           {t.switchLabel}
@@ -733,7 +733,7 @@ function App() {
         )}
       </section>
 
-      <section id="gallery" className="section gallery-section" data-reveal>
+      <section id="gallery" className="section gallery-section">
         <div className="section-heading-row">
           <div>
             <p className="section-kicker">{t.gallery.kicker}</p>
@@ -744,7 +744,7 @@ function App() {
         {galleryItems.length === 0 ? <p className="empty">{t.gallery.empty}</p> : (
           <div className="gallery">
             {galleryItems.map((item, index) => (
-              <figure key={`${item.url}-${index}`} data-reveal>
+              <figure key={`${item.url}-${index}`}>
                 <button className="gallery-media-button" type="button" onClick={() => setLightboxIndex(index)} aria-label={`${t.gallery.open}: ${item.memory.caption || item.memory.name}`}>
                   {item.type?.startsWith('video/') ? <video src={item.url} preload="metadata" /> : <img src={getOptimizedImageUrl(item.url, { width: 900, height: 675 })} alt={item.memory.caption || t.gallery.alt(item.memory.name)} loading="lazy" decoding="async" />}
                   <span className="gallery-expand-label">{t.gallery.open}</span>
